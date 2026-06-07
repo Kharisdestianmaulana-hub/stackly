@@ -1,73 +1,101 @@
-# React + TypeScript + Vite
+# Stackly ⚡️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Stackly is a modern, lightweight, and blazing-fast local web server stack manager (Apache, PHP, MySQL/MariaDB) designed to supercharge your web development workflow. Built with React, Vite, Tailwind CSS, and Electron, it provides an intuitive, premium, and easy-to-use interface to manage your local development environment.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+*Untuk versi Bahasa Indonesia, silakan gulir ke bawah.* 🇮🇩
 
-## React Compiler
+## 🌟 Features (English)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Service Manager:** Start, stop, and restart Apache, MySQL, and PHP seamlessly.
+- **Local Project Manager:** Create, delete, and duplicate your local web projects easily.
+- **Built-in Database Manager:** An integrated alternative to phpMyAdmin! Create tables, run SQL queries, insert data, backup, and restore databases directly from the app.
+- **System Logs:** Live monitoring for server logs (Apache & MySQL).
+- **Multi-language Support:** Easily switch between English and Indonesian.
+- **Beautiful UI:** Premium, responsive, and carefully crafted user interface with dark mode.
 
-## Expanding the ESLint configuration
+## 🚀 How to Run the App
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Installation
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/Kharisdestianmaulana-hub/stackly.git
+   cd stackly
+   ```
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Running the App
+To run the app as a desktop application (Electron + Vite):
+```bash
+npm run desktop
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To run the app in the browser (Vite dev server only):
+```bash
+npm run dev
 ```
+
+To build the app for production:
+```bash
+npm run build
+```
+
+---
+
+<br />
+
+# Stackly ⚡️ (Bahasa Indonesia)
+
+Stackly adalah manajer *local web server stack* (Apache, PHP, MySQL/MariaDB) yang modern, ringan, dan sangat cepat, dirancang untuk mempermudah alur kerja pengembangan web Anda. Dibangun menggunakan React, Vite, Tailwind CSS, dan Electron, aplikasi ini menyediakan antarmuka premium yang intuitif dan mudah digunakan untuk mengelola lingkungan *development* lokal Anda.
+
+## 🌟 Fitur Utama
+
+- **Manajer Servis:** Nyalakan, matikan, dan *restart* Apache, MySQL, dan PHP dengan mudah.
+- **Manajer Proyek Lokal:** Buat, hapus, dan gandakan proyek web lokal Anda tanpa ribet.
+- **Manajer Database Bawaan:** Alternatif terintegrasi untuk phpMyAdmin! Anda bisa membuat tabel, menjalankan *query* SQL, memasukkan data, *backup*, dan *restore* database langsung dari aplikasi.
+- **Log Sistem:** Pemantauan langsung untuk log server (Apache & MySQL).
+- **Dukungan Multi-Bahasa:** Beralih antara bahasa Inggris dan bahasa Indonesia dengan satu klik.
+- **Antarmuka Cantik:** UI premium dan responsif, lengkap dengan mode gelap.
+
+## 🚀 Cara Menjalankan Aplikasi
+
+### Persyaratan Sistem
+Pastikan Anda sudah menginstal [Node.js](https://nodejs.org/) di komputer Anda.
+
+### Instalasi
+1. *Clone* repositori ini:
+   ```bash
+   git clone https://github.com/Kharisdestianmaulana-hub/stackly.git
+   cd stackly
+   ```
+2. Instal dependensi yang dibutuhkan:
+   ```bash
+   npm install
+   ```
+
+### Menjalankan Aplikasi
+Untuk menjalankan aplikasi sebagai program Desktop (Electron + Vite):
+```bash
+npm run desktop
+```
+
+Untuk menjalankan aplikasi hanya di browser (Vite *dev server*):
+```bash
+npm run dev
+```
+
+Untuk *build* aplikasi versi produksi:
+```bash
+npm run build
+```
+
+---
+
+*Made with ❤️ by the Stackly Team.*
