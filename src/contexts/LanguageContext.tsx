@@ -18,8 +18,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   // Load language from backend on mount
   React.useEffect(() => {
     const fetchLang = async () => {
-      if (window.stackly?.config) {
-        const conf = await window.stackly.config.get();
+      if (window.stackly?.settings) {
+        const conf = await window.stackly.settings.get();
         if (conf.language) {
           setLanguageState(conf.language);
         }
@@ -30,8 +30,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const setLanguage = async (lang: Language) => {
     setLanguageState(lang);
-    if (window.stackly?.config) {
-      await window.stackly.config.update({ language: lang });
+    if (window.stackly?.settings) {
+      await window.stackly.settings.update({ language: lang });
     }
   };
 

@@ -33,8 +33,8 @@ export function InsertDataModal({ dbName, tableName, onClose, onSuccess }: Inser
         setColumns(structure);
         
         // Initialize form data
-        const initialData: Record<string, string> = {};
-        structure.forEach(col => {
+        const initialData: Record<string, any> = {};
+        structure.forEach((col: any) => {
           // If auto_increment, we can leave it empty by default
           if (col.extra.includes('auto_increment')) {
             initialData[col.field] = '';

@@ -279,7 +279,7 @@ export function Database() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2">
                       <h3 className="text-base font-semibold text-text-primary truncate" title={db.name}>{db.name}</h3>
-                      {isSystemDb && <AlertCircle className="w-3.5 h-3.5 text-warning" title="System Database" />}
+                      {isSystemDb && <span title={t('db.systemDbHover')}><AlertCircle className="w-3.5 h-3.5 text-warning" /></span>}
                     </div>
                     <p className="text-xs text-text-muted mt-1">{db.sizeMb} MB</p>
                   </div>

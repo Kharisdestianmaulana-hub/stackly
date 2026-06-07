@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ArrowLeft, TableProperties, Terminal, Settings, Trash2, Database as DatabaseIcon, RefreshCw, Eye, Plus } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
 import { TableDetail } from './TableDetail';
 import { CreateTableModal } from './CreateTableModal';
 import { useConfirm } from '../contexts/ConfirmContext';
@@ -99,7 +100,7 @@ export function DatabaseDetail({ db, onBack }: DatabaseDetailProps) {
       } else {
         const lines = result.trim().split('\n');
         const columns = lines[0].split('\t');
-        const rows = lines.slice(1).map(line => line.split('\t'));
+        const rows = lines.slice(1).map((line: string) => line.split('\t'));
         setSqlResult({ columns, rows });
       }
     } else {
@@ -191,36 +192,34 @@ export function DatabaseDetail({ db, onBack }: DatabaseDetailProps) {
                       <tr>
                         <th className="px-4 py-3 font-medium">Table Name</th>
                         <th className="px-4 py-3 font-medium">Engine</th>
-                        <th className="px-4 py-3 font-medium">Collation</th>
                         <th className="px-4 py-3 font-medium text-right">Rows</th>
                         <th className="px-4 py-3 font-medium text-right">Size</th>
+                        <th className="px-4 py-3 font-medium">Collation</th>
                         <th className="px-4 py-3 font-medium text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border-soft">
-                      {tables.map(t => (
-                        <tr 
-                          key={t.name} 
-                          className="hover:bg-white/5 transition-colors cursor-pointer"
-                          onClick={() => setSelectedTable(t.name)}
-                        >
-                          <td className="px-4 py-3 font-medium text-text-primary flex items-center">
-                            <TableProperties className="w-4 h-4 mr-2 text-text-muted" />
-                            {t.name}
+                      {tables.map((tableInfo, index) => (
+                        <tr key={index} className="hover:bg-white/5 transition-colors cursor-pointer group" onClick={() => setSelectedTable(tableInfo.name)}>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center text-text-primary">
+                              <TableProperties className="w-4 h-4 mr-3 text-text-secondary group-hover:text-electric-blue transition-colors" />
+                              <span className="font-medium group-hover:text-electric-blue transition-colors">{tableInfo.name}</span>
+                            </div>
                           </td>
-                          <td className="px-4 py-3 text-text-secondary">{t.engine}</td>
-                          <td className="px-4 py-3 text-text-secondary">{t.collation}</td>
-                          <td className="px-4 py-3 text-right text-text-primary">{t.rows}</td>
-                          <td className="px-4 py-3 text-right text-text-secondary">{t.sizeMb} MB</td>
+                          <td className="px-4 py-3"><span className="px-2 py-1 rounded bg-white/5 text-xs text-text-secondary">{tableInfo.engine}</span></td>
+                          <td className="px-4 py-3 text-right tabular-nums">{tableInfo.rows.toLocaleString()}</td>
+                          <td className="px-4 py-3 text-right tabular-nums">{tableInfo.sizeMb} MB</td>
+                          <td className="px-4 py-3 truncate max-w-[120px]">{tableInfo.collation}</td>
                           <td className="px-4 py-3 text-center">
                             <div className="flex items-center justify-center space-x-2">
-                              <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); setSelectedTable(t.name); }} className="h-7 px-2 text-xs">
+                              <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); setSelectedTable(tableInfo.name); }} className="h-7 px-2 text-xs">
                                 <Eye className="w-3.5 h-3.5 mr-1" /> {t('common.view')}
                               </Button>
-                              <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); handleTruncateTable(t.name); }} className="h-7 px-2 text-xs">
+                              <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); handleTruncateTable(tableInfo.name); }} className="h-7 px-2 text-xs">
                                 {t('dbDetail.truncate')}
                               </Button>
-                              <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); handleDropTable(t.name); }} className="h-7 px-2 text-xs text-danger hover:text-danger hover:bg-danger/10">
+                              <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); handleDropTable(tableInfo.name); }} className="h-7 px-2 text-xs text-danger hover:text-danger hover:bg-danger/10">
                                 {t('common.delete')}
                               </Button>
                             </div>
