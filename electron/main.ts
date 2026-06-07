@@ -15,7 +15,7 @@ function initializePortableDirectories() {
   const userConfigDir = path.join(userData, 'config');
   const userDataDir = path.join(userData, 'mysql_data');
 
-  if (!fs.existsSync(userConfigDir)) {
+  if (!fs.existsSync(path.join(userConfigDir, 'apache', 'httpd.conf'))) {
     console.log('Initializing user config directory...');
     const srcConfig = path.join(basePath, 'config');
     if (fs.existsSync(srcConfig)) {
@@ -23,7 +23,7 @@ function initializePortableDirectories() {
     }
   }
 
-  if (!fs.existsSync(userDataDir)) {
+  if (!fs.existsSync(path.join(userDataDir, 'mysql'))) {
     console.log('Initializing user database directory...');
     const srcData = path.join(basePath, 'src', 'assets', 'clean_mysql');
     if (fs.existsSync(srcData)) {
