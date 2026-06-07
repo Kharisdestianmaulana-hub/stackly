@@ -79,9 +79,13 @@
     },
     "linux": {
       "target": [
-        "AppImage"
+        "AppImage",
+        "deb",
+        "rpm",
+        "pacman"
       ],
-      "icon": "src/assets/react.svg"
+      "icon": "src/assets/react.svg",
+      "category": "Development"
     }
   }
 }
