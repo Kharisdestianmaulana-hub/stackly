@@ -1,6 +1,11 @@
 {
   "name": "stackly",
   "productName": "Stackly",
+  "description": "A modern local web server stack manager (Apache, PHP, MySQL) built with React, Vite, and Electron.",
+  "author": {
+    "name": "Kharisdestianmaulana",
+    "email": "kharisdestianmaulana@example.com"
+  },
   "private": true,
   "version": "1.0.0",
   "type": "module",
