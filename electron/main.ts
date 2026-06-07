@@ -4,7 +4,34 @@ import { setupIpcHandlers } from './ipc';
 import { getAppConfig } from './config/appConfig';
 import { spawnService, killAllServices } from './services/processManager';
 
+import * as fs from 'fs';
+
 const isDev = process.env.NODE_ENV === 'development';
+
+function initializePortableDirectories() {
+  const userData = app.getPath('userData');
+  const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
+
+  const userConfigDir = path.join(userData, 'config');
+  const userDataDir = path.join(userData, 'mysql_data');
+
+  if (!fs.existsSync(userConfigDir)) {
+    console.log('Initializing user config directory...');
+    const srcConfig = path.join(basePath, 'config');
+    if (fs.existsSync(srcConfig)) {
+      fs.cpSync(srcConfig, userConfigDir, { recursive: true });
+    }
+  }
+
+  if (!fs.existsSync(userDataDir)) {
+    console.log('Initializing user database directory...');
+    const srcData = path.join(basePath, 'src', 'assets', 'clean_mysql');
+    if (fs.existsSync(srcData)) {
+      fs.cpSync(srcData, userDataDir, { recursive: true });
+    }
+  }
+}
+
 
 if (isDev) {
   app.setName('Stackly');
@@ -44,6 +71,7 @@ function createWindow() {
 }
 
 app.whenReady().then(async () => {
+  initializePortableDirectories();
   setupIpcHandlers();
   createWindow();
   

@@ -94,8 +94,9 @@ export async function spawnService(serviceName: ServiceName, args: string[]): Pr
       return false;
     }
     updateApachePort(config.apachePort);
+    const configDir = path.join(app.getPath('userData'), 'config');
     command = path.join(basePath, 'runtime', 'apache', 'bin', 'httpd');
-    commandArgs = ['-D', 'FOREGROUND', '-C', `Define STACKLY_DOCROOT ${getResolvedHtdocsPath()}`, '-f', path.join(basePath, 'config', 'apache', 'httpd.conf')];
+    commandArgs = ['-D', 'FOREGROUND', '-C', `Define STACKLY_DOCROOT ${getResolvedHtdocsPath()}`, '-f', path.join(configDir, 'apache', 'httpd.conf')];
   } else if (serviceName === 'mysql') {
     const isPortFree = await checkPort(config.mysqlPort);
     if (!isPortFree) {
@@ -104,8 +105,10 @@ export async function spawnService(serviceName: ServiceName, args: string[]): Pr
       return false;
     }
     updateMysqlPort(config.mysqlPort);
+    const configDir = path.join(app.getPath('userData'), 'config');
+    const mysqlDataDir = path.join(app.getPath('userData'), 'mysql_data');
     command = path.join(basePath, 'runtime', 'mysql', 'bin', 'mysqld');
-    commandArgs = ['--defaults-file=' + path.join(basePath, 'config', 'mysql', 'my.cnf')];
+    commandArgs = ['--defaults-file=' + path.join(configDir, 'mysql', 'my.cnf'), `--datadir=${mysqlDataDir}`];
   } else if (serviceName === 'php') {
     const isPortFree = await checkPort(8000);
     if (!isPortFree) {
@@ -114,7 +117,8 @@ export async function spawnService(serviceName: ServiceName, args: string[]): Pr
       return false;
     }
     command = path.join(basePath, 'runtime', 'php', 'bin', 'php');
-    commandArgs = ['-S', '127.0.0.1:8000', '-t', getResolvedHtdocsPath(), '-c', path.join(basePath, 'config', 'php', 'php.ini')];
+    const configDir = path.join(app.getPath('userData'), 'config');
+    commandArgs = ['-S', '127.0.0.1:8000', '-t', getResolvedHtdocsPath(), '-c', path.join(configDir, 'php', 'php.ini')];
   } else if (serviceName === 'phpmyadmin') {
     const isPortFree = await checkPort(config.phpmyadminPort);
     if (!isPortFree) {
@@ -122,7 +126,7 @@ export async function spawnService(serviceName: ServiceName, args: string[]): Pr
       addLog('phpMyAdmin', 'error', `Port conflict: Port ${config.phpmyadminPort} is already in use by another application.`);
       return false;
     }
-    const pmaConfigPath = path.join(basePath, 'runtime', 'phpmyadmin', 'config.inc.php');
+    const pmaConfigPath = path.join(app.getPath('userData'), 'config', 'phpmyadmin', 'config.inc.php');
     const pmaConfigContent = `<?php
 /* Stackly phpMyAdmin Configuration */
 $cfg['blowfish_secret'] = 'stackly_secure_secret_key_1234567890'; 
@@ -136,7 +140,7 @@ $cfg['Servers'][$i]['AllowNoPassword'] = true;
 $cfg['Servers'][$i]['password'] = '${config.mysqlRootPassword.replace(/'/g, "\\\\'")}';
 $cfg['UploadDir'] = '';
 $cfg['SaveDir'] = '';
-$cfg['TempDir'] = '${path.join(basePath, 'runtime', 'phpmyadmin', 'tmp')}';
+$cfg['TempDir'] = '${path.join(app.getPath('userData'), 'phpmyadmin_tmp')}';
 
 // Configuration Storage
 $cfg['Servers'][$i]['pmadb'] = 'phpmyadmin';
@@ -160,10 +164,18 @@ $cfg['Servers'][$i]['central_columns'] = 'pma__central_columns';
 $cfg['Servers'][$i]['designer_settings'] = 'pma__designer_settings';
 $cfg['Servers'][$i]['export_templates'] = 'pma__export_templates';
 ?>`;
+    if (!fs.existsSync(path.dirname(pmaConfigPath))) {
+      fs.mkdirSync(path.dirname(pmaConfigPath), { recursive: true });
+    }
     fs.writeFileSync(pmaConfigPath, pmaConfigContent, 'utf-8');
 
+    const pmaTmpPath = path.join(app.getPath('userData'), 'phpmyadmin_tmp');
+    if (!fs.existsSync(pmaTmpPath)) {
+      fs.mkdirSync(pmaTmpPath, { recursive: true });
+    }
+
     command = path.join(basePath, 'runtime', 'php', 'bin', 'php');
-    commandArgs = ['-S', `127.0.0.1:${config.phpmyadminPort}`, '-t', path.join(basePath, 'runtime', 'phpmyadmin'), '-c', path.join(basePath, 'config', 'php', 'php.ini')];
+    commandArgs = ['-S', `127.0.0.1:${config.phpmyadminPort}`, '-t', path.join(basePath, 'runtime', 'phpmyadmin'), '-c', path.join(configDir, 'php', 'php.ini')];
   } else {
     setStatus(serviceName, 'running');
     return true;

@@ -63,7 +63,9 @@
     "files": [
       "dist/**/*",
       "dist-electron/**/*",
-      "runtime/**/*"
+      "runtime/**/*",
+      "config/**/*",
+      "src/assets/clean_mysql/**/*"
     ],
     "mac": {
       "target": [

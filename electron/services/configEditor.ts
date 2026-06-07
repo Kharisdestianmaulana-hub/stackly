@@ -2,11 +2,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { app } from 'electron';
 
-const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
+const configDir = path.join(app.getPath('userData'), 'config');
 
 export function updateApachePort(newPort: number): boolean {
   try {
-    const configPath = path.join(basePath, 'config', 'apache', 'httpd.conf');
+    const configPath = path.join(configDir, 'apache', 'httpd.conf');
     if (!fs.existsSync(configPath)) return false;
 
     let content = fs.readFileSync(configPath, 'utf8');
@@ -26,7 +26,7 @@ export function updateApachePort(newPort: number): boolean {
 
 export function updateMysqlPort(newPort: number): boolean {
   try {
-    const configPath = path.join(basePath, 'config', 'mysql', 'my.cnf');
+    const configPath = path.join(configDir, 'mysql', 'my.cnf');
     if (!fs.existsSync(configPath)) return false;
 
     let content = fs.readFileSync(configPath, 'utf8');
