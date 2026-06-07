@@ -20,6 +20,22 @@ function initializePortableDirectories() {
     const srcConfig = path.join(basePath, 'config');
     if (fs.existsSync(srcConfig)) {
       fs.cpSync(srcConfig, userConfigDir, { recursive: true });
+      
+      const configFilesToPatch = [
+        path.join(userConfigDir, 'apache', 'httpd.conf'),
+        path.join(userConfigDir, 'mysql', 'my.cnf'),
+        path.join(userConfigDir, 'php', 'php.ini')
+      ];
+      
+      const userDataNormalized = userData.replace(/\\/g, '/');
+      
+      for (const file of configFilesToPatch) {
+        if (fs.existsSync(file)) {
+          let content = fs.readFileSync(file, 'utf8');
+          content = content.replace(/\{\{USER_DATA_PATH\}\}/g, userDataNormalized);
+          fs.writeFileSync(file, content);
+        }
+      }
     }
   }
 
