@@ -42,10 +42,29 @@ To run the app in the browser (Vite dev server only):
 npm run dev
 ```
 
-To build the app for production:
+To build the app for production (compile only):
 ```bash
 npm run build
 ```
+
+### Packaging the App (Executables)
+To generate an installer for your operating system:
+
+For Windows (.exe):
+```bash
+npm run pack:win
+```
+
+For macOS (.dmg):
+```bash
+npm run pack:mac
+```
+
+For Linux (.AppImage):
+```bash
+npm run pack:linux
+```
+The output files will be saved in the `release/` directory.
 
 ---
 
@@ -91,10 +110,29 @@ Untuk menjalankan aplikasi hanya di browser (Vite *dev server*):
 npm run dev
 ```
 
-Untuk *build* aplikasi versi produksi:
+Untuk *build* aplikasi versi produksi (kompilasi saja):
 ```bash
 npm run build
 ```
+
+### Mem-build Installer Aplikasi (Exe, Dmg, Linux)
+Untuk menghasilkan *installer* sesuai sistem operasi Anda:
+
+Untuk Windows (.exe):
+```bash
+npm run pack:win
+```
+
+Untuk macOS (.dmg):
+```bash
+npm run pack:mac
+```
+
+Untuk Linux (.AppImage):
+```bash
+npm run pack:linux
+```
+File *installer* hasil *build* akan tersimpan di dalam folder `release/`.
 
 ---
 

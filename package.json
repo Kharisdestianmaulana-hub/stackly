@@ -10,6 +10,9 @@
     "build:electron": "esbuild electron/main.ts --bundle --platform=node --external:electron --outfile=dist-electron/main.cjs && esbuild electron/preload.ts --bundle --platform=node --external:electron --outfile=dist-electron/preload.cjs",
     "desktop": "cross-env NODE_ENV=development concurrently \"vite\" \"npm run build:electron && wait-on tcp:5173 && electron .\"",
     "build": "tsc -b && vite build && npm run build:electron",
+    "pack:mac": "npm run build && electron-builder --mac",
+    "pack:win": "npm run build && electron-builder --win",
+    "pack:linux": "npm run build && electron-builder --linux",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -45,5 +48,40 @@
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
     "wait-on": "^9.0.10"
+  },
+  "build": {
+    "appId": "com.stackly.app",
+    "productName": "Stackly",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "runtime/**/*"
+    ],
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "src/assets/react.svg"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "src/assets/react.svg"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "src/assets/react.svg"
+    }
   }
 }
