@@ -14,6 +14,11 @@ function initializePortableDirectories() {
 
   const userConfigDir = path.join(userData, 'config');
   const userDataDir = path.join(userData, 'mysql_data');
+  const apacheLogsDir = path.join(userData, 'apache_logs');
+
+  if (!fs.existsSync(apacheLogsDir)) {
+    fs.mkdirSync(apacheLogsDir, { recursive: true });
+  }
 
   if (!fs.existsSync(path.join(userConfigDir, 'apache', 'httpd.conf'))) {
     console.log('Initializing user config directory...');
