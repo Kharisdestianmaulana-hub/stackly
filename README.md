@@ -1,12 +1,12 @@
-# Stackly ⚡️
+# Stackly
 
 Stackly is a modern, lightweight, and blazing-fast local web server stack manager (Apache, PHP, MySQL/MariaDB) designed to supercharge your web development workflow. Built with React, Vite, Tailwind CSS, and Electron, it provides an intuitive, premium, and easy-to-use interface to manage your local development environment.
 
 ---
 
-*Untuk versi Bahasa Indonesia, silakan gulir ke bawah.* 🇮🇩
+*Untuk versi Bahasa Indonesia, silakan gulir ke bawah.*
 
-## 🌟 Features (English)
+## Features (English)
 
 - **Service Manager:** Start, stop, and restart Apache, MySQL, and PHP seamlessly.
 - **Local Project Manager:** Create, delete, and duplicate your local web projects easily.
@@ -15,7 +15,7 @@ Stackly is a modern, lightweight, and blazing-fast local web server stack manage
 - **Multi-language Support:** Easily switch between English and Indonesian.
 - **Beautiful UI:** Premium, responsive, and carefully crafted user interface with dark mode.
 
-## 🚀 How to Run the App
+## How to Run the App
 
 ### Prerequisites
 Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
@@ -51,11 +51,11 @@ npm run build
 
 <br />
 
-# Stackly ⚡️ (Bahasa Indonesia)
+# Stackly (Bahasa Indonesia)
 
 Stackly adalah manajer *local web server stack* (Apache, PHP, MySQL/MariaDB) yang modern, ringan, dan sangat cepat, dirancang untuk mempermudah alur kerja pengembangan web Anda. Dibangun menggunakan React, Vite, Tailwind CSS, dan Electron, aplikasi ini menyediakan antarmuka premium yang intuitif dan mudah digunakan untuk mengelola lingkungan *development* lokal Anda.
 
-## 🌟 Fitur Utama
+## Fitur Utama
 
 - **Manajer Servis:** Nyalakan, matikan, dan *restart* Apache, MySQL, dan PHP dengan mudah.
 - **Manajer Proyek Lokal:** Buat, hapus, dan gandakan proyek web lokal Anda tanpa ribet.
@@ -64,7 +64,7 @@ Stackly adalah manajer *local web server stack* (Apache, PHP, MySQL/MariaDB) yan
 - **Dukungan Multi-Bahasa:** Beralih antara bahasa Inggris dan bahasa Indonesia dengan satu klik.
 - **Antarmuka Cantik:** UI premium dan responsif, lengkap dengan mode gelap.
 
-## 🚀 Cara Menjalankan Aplikasi
+## Cara Menjalankan Aplikasi
 
 ### Persyaratan Sistem
 Pastikan Anda sudah menginstal [Node.js](https://nodejs.org/) di komputer Anda.
@@ -98,4 +98,4 @@ npm run build
 
 ---
 
-*Made with ❤️ by the Stackly Team.*
+*Made by the Stackly Team.*
