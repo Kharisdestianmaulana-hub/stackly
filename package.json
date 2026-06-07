@@ -62,7 +62,9 @@
     },
     "files": [
       "dist/**/*",
-      "dist-electron/**/*",
+      "dist-electron/**/*"
+    ],
+    "extraResources": [
       "runtime/**/*",
       "config/**/*",
       "src/assets/clean_mysql/**/*"
