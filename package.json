@@ -69,7 +69,7 @@
       "target": [
         "dmg"
       ],
-      "icon": "src/assets/react.svg"
+      "icon": "public/Stackly.png"
     },
     "win": {
       "target": [
@@ -80,7 +80,7 @@
           ]
         }
       ],
-      "icon": "src/assets/react.svg"
+      "icon": "public/Stackly.png"
     },
     "linux": {
       "target": [
@@ -89,7 +89,7 @@
         "rpm",
         "pacman"
       ],
-      "icon": "src/assets/react.svg",
+      "icon": "public/Stackly.png",
       "category": "Development"
     }
   }
