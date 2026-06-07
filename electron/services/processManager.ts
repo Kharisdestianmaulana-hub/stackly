@@ -24,7 +24,7 @@ function setStatus(serviceName: ServiceName, status: ServiceStatus) {
   }
 }
 
-const basePath = app.getAppPath();
+const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
 
 // Background Health Poller
 setInterval(async () => {
