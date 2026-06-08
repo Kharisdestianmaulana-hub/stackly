@@ -47,6 +47,13 @@ setInterval(async () => {
   await checkService('phpmyadmin', config.phpmyadminPort);
 }, 5000);
 
+export async function startAllServices() {
+  await spawnService('apache', []);
+  await spawnService('mysql', []);
+  await spawnService('php', []);
+  await spawnService('phpmyadmin', []);
+}
+
 export function getResolvedHtdocsPath(): string {
   const config = getAppConfig();
   let htdocs = config.htdocsPath || '~/Sites/stackly';
@@ -126,8 +133,9 @@ export async function spawnService(serviceName: ServiceName, args: string[]): Pr
       addLog('phpMyAdmin', 'error', `Port conflict: Port ${config.phpmyadminPort} is already in use by another application.`);
       return false;
     }
-    const pmaConfigPath = path.join(app.getPath('userData'), 'config', 'phpmyadmin', 'config.inc.php');
-    const pmaConfigContent = `<?php
+    try {
+      const pmaConfigPath = path.join(app.getPath('userData'), 'config', 'phpmyadmin', 'config.inc.php');
+      const pmaConfigContent = `<?php
 /* Stackly phpMyAdmin Configuration */
 $cfg['blowfish_secret'] = 'stackly_secure_secret_key_1234567890'; 
 $i = 1;
@@ -137,7 +145,7 @@ $cfg['Servers'][$i]['port'] = '${config.mysqlPort}';
 $cfg['Servers'][$i]['user'] = 'root';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = true;
-$cfg['Servers'][$i]['password'] = '${config.mysqlRootPassword.replace(/'/g, "\\\\'")}';
+$cfg['Servers'][$i]['password'] = '${(config.mysqlRootPassword || "").replace(/'/g, "\\\\'")}';
 $cfg['UploadDir'] = '';
 $cfg['SaveDir'] = '';
 $cfg['TempDir'] = '${path.join(app.getPath('userData'), 'phpmyadmin_tmp')}';
@@ -175,7 +183,12 @@ $cfg['Servers'][$i]['export_templates'] = 'pma__export_templates';
     }
 
     command = path.join(basePath, 'runtime', 'php', 'bin', 'php');
-    commandArgs = ['-S', `127.0.0.1:${config.phpmyadminPort}`, '-t', path.join(basePath, 'runtime', 'phpmyadmin'), '-c', path.join(configDir, 'php', 'php.ini')];
+      commandArgs = ['-S', `127.0.0.1:${config.phpmyadminPort}`, '-t', path.join(basePath, 'runtime', 'phpmyadmin'), '-c', path.join(configDir, 'php', 'php.ini')];
+    } catch (err: any) {
+      setStatus(serviceName, 'error');
+      addLog('Phpmyadmin', 'error', `Exception during config generation: ${err.message}`);
+      return false;
+    }
   } else {
     setStatus(serviceName, 'running');
     return true;
