@@ -1,6 +1,6 @@
 import { ipcMain, BrowserWindow, shell, app, dialog } from 'electron';
 import { getAppConfig, updateAppConfig } from './config/appConfig';
-import { getServiceStatus, spawnService, killService, forceKillZombies } from './services/processManager';
+import { getServiceStatus, spawnService, killService, forceKillZombies, getResolvedHtdocsPath } from './services/processManager';
 import { checkPort } from './services/portChecker';
 import { getLogs, clearLogs } from './services/logManager';
 import { getProjects, createProject, deleteProject, openProjectInEditor, openProjectFolder, renameProject, duplicateProject, createBoilerplateProject, importProjectZip, exportProjectZip } from './services/projectManager';
@@ -9,6 +9,15 @@ import { getTables, dropTable, truncateTable, getTableStructure, createTable, al
 import { getTableData, insertRow, deleteRow, updateRow, executeRawSql } from './services/dbData';
 
 import * as path from 'path';
+import * as os from 'os';
+import * as fs from 'fs';
+
+function resolveUserPath(inputPath: string): string {
+  if (inputPath.startsWith('~/')) {
+    return path.join(os.homedir(), inputPath.slice(2));
+  }
+  return path.resolve(inputPath);
+}
 
 export function setupIpcHandlers() {
   ipcMain.handle('services:get-status', async () => {
@@ -53,40 +62,51 @@ export function setupIpcHandlers() {
   });
 
   ipcMain.handle('paths:open-htdocs', async () => {
-    shell.openPath(path.join(app.getAppPath(), 'htdocs'));
+    const htdocsPath = getResolvedHtdocsPath();
+    shell.openPath(htdocsPath);
     return { success: true };
   });
 
   ipcMain.handle('paths:open-logs', async () => {
-    shell.openPath(path.join(app.getAppPath(), 'logs'));
+    const config = getAppConfig();
+    const logsPath = resolveUserPath(config.logsPath || '~/Stackly/logs');
+    if (!fs.existsSync(logsPath)) {
+      fs.mkdirSync(logsPath, { recursive: true });
+    }
+    shell.openPath(logsPath);
     return { success: true };
   });
 
   ipcMain.handle('paths:open-backups', async () => {
-    shell.openPath(path.join(app.getAppPath(), 'backups'));
+    const config = getAppConfig();
+    const backupPath = resolveUserPath(config.backupPath || '~/Stackly/backups');
+    if (!fs.existsSync(backupPath)) {
+      fs.mkdirSync(backupPath, { recursive: true });
+    }
+    shell.openPath(backupPath);
     return { success: true };
   });
 
   ipcMain.handle('paths:open-config', async (_event, serviceName: string) => {
     let configPath = '';
-    const basePath = app.getAppPath();
+    const userConfigDir = path.join(app.getPath('userData'), 'config');
     
     switch (serviceName) {
       case 'apache':
-        configPath = path.join(basePath, 'config', 'apache', 'httpd.conf');
+        configPath = path.join(userConfigDir, 'apache', 'httpd.conf');
         break;
       case 'mysql':
-        configPath = path.join(basePath, 'config', 'mysql', 'my.cnf');
+        configPath = path.join(userConfigDir, 'mysql', 'my.cnf');
         break;
       case 'php':
-        configPath = path.join(basePath, 'config', 'php', 'php.ini');
+        configPath = path.join(userConfigDir, 'php', 'php.ini');
         break;
       case 'phpmyadmin':
-        configPath = path.join(basePath, 'htdocs', 'phpmyadmin', 'config.inc.php');
+        configPath = path.join(userConfigDir, 'phpmyadmin', 'config.inc.php');
         break;
     }
     
-    if (configPath) {
+    if (configPath && fs.existsSync(configPath)) {
       shell.openPath(configPath);
     }
     return { success: true };
@@ -94,23 +114,23 @@ export function setupIpcHandlers() {
 
   ipcMain.handle('paths:open-raw-log', async (_event, serviceName: string) => {
     let logPath = '';
-    const basePath = app.getAppPath();
+    const userData = app.getPath('userData');
     
     switch (serviceName) {
       case 'apache':
-        logPath = path.join(basePath, 'runtime', 'apache', 'logs', 'error_log');
+        logPath = path.join(userData, 'apache_logs');
         break;
       case 'mysql':
-        logPath = path.join(basePath, 'data', 'mysql', 'mysql.err'); // MySQL often writes to hostname.err, but let's just open the data dir for MVP or we know exact name? Actually, MariaDB usually uses hostname.err or mariadb.err. In XAMPP it's sometimes mysql_error.log.
-        // Wait, the data dir might have multiple .err files. It's safer to open the data/mysql directory or the specific .err file if we know it. I will open the data/mysql directory so the user can see all logs.
-        logPath = path.join(basePath, 'data', 'mysql');
+        logPath = path.join(userData, 'mysql_data');
         break;
-      case 'php':
-        logPath = path.join(basePath, 'config', 'php', 'logs', 'php_error_log');
+      case 'php': {
+        const config = getAppConfig();
+        logPath = resolveUserPath(config.logsPath || '~/Stackly/logs');
         break;
+      }
     }
     
-    if (logPath) {
+    if (logPath && fs.existsSync(logPath)) {
       shell.openPath(logPath);
     }
     return { success: true };

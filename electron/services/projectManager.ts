@@ -177,6 +177,7 @@ export async function duplicateProject(name: string, newName: string): Promise<b
 }
 
 import { createDatabase } from './dbAdmin';
+import { getAppConfig } from '../config/appConfig';
 
 export async function createBoilerplateProject(name: string, type: 'blank' | 'wordpress' | 'laravel'): Promise<{success: boolean, message?: string}> {
   const safeName = name.replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase();
@@ -236,8 +237,9 @@ export async function createBoilerplateProject(name: string, type: 'blank' | 'wo
               const envPath = path.join(projectPath, '.env');
               if (fs.existsSync(envPath)) {
                 let envContent = fs.readFileSync(envPath, 'utf8');
+                const appConfig = getAppConfig();
                 envContent = envContent.replace(/DB_DATABASE=laravel/, `DB_DATABASE=${dbName}`);
-                envContent = envContent.replace(/DB_PORT=3306/, `DB_PORT=3307`); // Stackly defaults to 3307 for now
+                envContent = envContent.replace(/DB_PORT=3306/, `DB_PORT=${appConfig.mysqlPort}`);
                 fs.writeFileSync(envPath, envContent);
               }
             } catch (e) {}

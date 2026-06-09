@@ -67,7 +67,15 @@
     "extraResources": [
       "runtime/**/*",
       "config/**/*",
-      "src/assets/clean_mysql/**/*"
+      "htdocs/**/*",
+      {
+        "from": "src/assets/clean_mysql",
+        "to": "data/clean_mysql"
+      },
+      {
+        "from": "public/Stackly.png",
+        "to": "Stackly.png"
+      }
     ],
     "mac": {
       "target": [

@@ -1,12 +1,9 @@
 import * as os from 'os';
 import * as path from 'path';
+import { app } from 'electron';
 
 export function resolveAppPath(...segments: string[]): string {
-  // Mock logic to handle cross-platform path abstractions cleanly
-  const base = process.env.NODE_ENV === 'development' 
-    ? path.join(__dirname, '..', '..')
-    : path.join(os.homedir(), '.stackly');
-    
+  const base = app.isPackaged ? process.resourcesPath : app.getAppPath();
   return path.join(base, ...segments);
 }
 

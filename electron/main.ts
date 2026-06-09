@@ -46,7 +46,7 @@ function initializePortableDirectories() {
 
   if (!fs.existsSync(path.join(userDataDir, 'mysql'))) {
     console.log('Initializing user database directory...');
-    const srcData = path.join(basePath, 'src', 'assets', 'clean_mysql');
+    const srcData = path.join(basePath, 'data', 'clean_mysql');
     if (fs.existsSync(srcData)) {
       fs.cpSync(srcData, userDataDir, { recursive: true });
     }
@@ -76,7 +76,9 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
     },
-    icon: path.join(__dirname, '../public/Stackly.png'),
+    icon: app.isPackaged
+      ? path.join(process.resourcesPath, 'Stackly.png')
+      : path.join(__dirname, '../public/Stackly.png'),
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden',
   });
 
@@ -98,10 +100,10 @@ app.whenReady().then(async () => {
   
   const config = getAppConfig();
   if (config.autoStartServices) {
-    // Only auto-start main services
     spawnService('apache', []);
     spawnService('mysql', []);
     spawnService('php', []);
+    spawnService('phpmyadmin', []);
   }
 
   app.on('activate', () => {
