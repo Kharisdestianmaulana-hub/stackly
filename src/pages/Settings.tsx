@@ -231,15 +231,15 @@ export function Settings() {
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <span className="text-text-muted block mb-1">Apache Port</span>
-                <span className="text-text-primary font-mono bg-sidebar px-2 py-1 rounded">8080</span>
+                <span className="text-text-primary font-mono bg-sidebar px-2 py-1 rounded">{config?.apachePort ?? '—'}</span>
               </div>
               <div>
                 <span className="text-text-muted block mb-1">MySQL Port</span>
-                <span className="text-text-primary font-mono bg-sidebar px-2 py-1 rounded">3307</span>
+                <span className="text-text-primary font-mono bg-sidebar px-2 py-1 rounded">{config?.mysqlPort ?? '—'}</span>
               </div>
               <div>
                 <span className="text-text-muted block mb-1">phpMyAdmin Port</span>
-                <span className="text-text-primary font-mono bg-sidebar px-2 py-1 rounded">8081</span>
+                <span className="text-text-primary font-mono bg-sidebar px-2 py-1 rounded">{config?.phpmyadminPort ?? '—'}</span>
               </div>
               <div>
                 <span className="text-text-muted block mb-1">{t('settings.version')}</span>
