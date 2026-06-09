@@ -33,14 +33,27 @@ function initializePortableDirectories() {
       ];
       
       const userDataNormalized = userData.replace(/\\/g, '/');
+      const runtimePathNormalized = path.join(basePath, 'runtime').replace(/\\/g, '/');
       
       for (const file of configFilesToPatch) {
         if (fs.existsSync(file)) {
           let content = fs.readFileSync(file, 'utf8');
           content = content.replace(/\{\{USER_DATA_PATH\}\}/g, userDataNormalized);
+          content = content.replace(/\{\{RUNTIME_PATH\}\}/g, runtimePathNormalized);
           fs.writeFileSync(file, content);
         }
       }
+    }
+  }
+
+  // Create extra directories needed by config templates
+  const extraDirs = [
+    path.join(userData, 'logs'),
+    path.join(userData, 'tmp')
+  ];
+  for (const dir of extraDirs) {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
   }
 
