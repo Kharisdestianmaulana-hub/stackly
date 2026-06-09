@@ -2,6 +2,10 @@ import { executeQuery, executeRaw } from './dbConnection';
 import { getServiceStatus } from './processManager';
 import { getAppConfig } from '../config/appConfig';
 import { execFile } from 'child_process';
+import { app } from 'electron';
+import * as path from 'path';
+
+const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
 
 export interface DatabaseInfo {
   name: string;
@@ -91,7 +95,7 @@ export async function exportDatabase(dbName: string, destPath: string): Promise<
     args.push(safeDb);
 
     // Use bundled mariadb dump
-    const dumpCmd = require('path').join(require('electron').app.getAppPath(), 'runtime', 'mysql', 'bin', 'mysqldump');
+    const dumpCmd = path.join(basePath, 'runtime', 'mysql', 'bin', 'mysqldump');
 
     execFile(dumpCmd, args, (error, stdout, stderr) => {
       if (error) {
@@ -123,7 +127,7 @@ export async function importDatabase(dbName: string, sourcePath: string): Promis
     
     args.push('-e', `source ${sourcePath}`);
 
-    const mysqlCmd = require('path').join(require('electron').app.getAppPath(), 'runtime', 'mysql', 'bin', 'mysql');
+    const mysqlCmd = path.join(basePath, 'runtime', 'mysql', 'bin', 'mysql');
 
     execFile(mysqlCmd, args, (error, stdout, stderr) => {
       if (error) {
