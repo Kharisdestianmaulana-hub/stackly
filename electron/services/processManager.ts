@@ -182,8 +182,9 @@ $cfg['Servers'][$i]['export_templates'] = 'pma__export_templates';
       fs.mkdirSync(pmaTmpPath, { recursive: true });
     }
 
+    const configDir = path.join(app.getPath('userData'), 'config');
     command = path.join(basePath, 'runtime', 'php', 'bin', 'php');
-      commandArgs = ['-S', `127.0.0.1:${config.phpmyadminPort}`, '-t', path.join(basePath, 'runtime', 'phpmyadmin'), '-c', path.join(configDir, 'php', 'php.ini')];
+    commandArgs = ['-S', `127.0.0.1:${config.phpmyadminPort}`, '-t', path.join(basePath, 'runtime', 'phpmyadmin'), '-c', path.join(configDir, 'php', 'php.ini')];
     } catch (err: any) {
       setStatus(serviceName, 'error');
       addLog('Phpmyadmin', 'error', `Exception during config generation: ${err.message}`);
